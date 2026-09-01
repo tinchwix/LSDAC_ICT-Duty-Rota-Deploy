@@ -1,0 +1,911 @@
+{
+  "settings": {
+    "churchName": "Lavington Seventh-day Adventist Church",
+    "churchAcronym": "LSDAC",
+    "department": "Media & Communication ICT Department",
+    "coordinator": "Aaron",
+    "period": "September – November 2026",
+    "services": [
+      {
+        "id": "sabbath_school",
+        "name": "Sabbath School",
+        "time": "09:00 AM - 10:30 AM"
+      },
+      {
+        "id": "divine_service",
+        "name": "Divine Service",
+        "time": "10:45 AM - 12:45 PM"
+      },
+      {
+        "id": "afternoon_ay",
+        "name": "Afternoon AY / Bible Study",
+        "time": "02:30 PM - 05:00 PM"
+      }
+    ],
+    "roles": [
+      {
+        "id": "audio",
+        "name": "Audio Console",
+        "category": "Audio",
+        "description": "FOH audio mixing, preacher mics, choir balance & stage acoustic levels",
+        "icon": "volume-2",
+        "badgeColor": "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800"
+      },
+      {
+        "id": "switcher",
+        "name": "Video Switcher",
+        "category": "Broadcast",
+        "description": "ATEM/vMix/OBS switching, stream graphics, camera cuts & stream transmission",
+        "icon": "video",
+        "badgeColor": "bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800"
+      },
+      {
+        "id": "camera",
+        "name": "Camera Operator",
+        "category": "Broadcast",
+        "description": "Pulpit tracking, PTZ camera angles, wide shots & congregational framing",
+        "icon": "camera",
+        "badgeColor": "bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-300 dark:border-indigo-800"
+      },
+      {
+        "id": "presentation",
+        "name": "Presentation",
+        "category": "Visuals",
+        "description": "EasyWorship hymnal, scripture readings, sermon slides & countdown timer",
+        "icon": "projector",
+        "badgeColor": "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-900/40 dark:text-emerald-300 dark:border-emerald-800"
+      },
+      {
+        "id": "stage",
+        "name": "Stage Audio",
+        "category": "Stage",
+        "description": "Stage monitors, wireless hand mics, podium audio setup & platform check",
+        "icon": "mic",
+        "badgeColor": "bg-sky-100 text-sky-800 border-sky-300 dark:bg-sky-900/40 dark:text-sky-300 dark:border-sky-800"
+      },
+      {
+        "id": "online",
+        "name": "Online Stream",
+        "category": "Online",
+        "description": "YouTube/Facebook stream monitoring, live chat moderation & viewer support",
+        "icon": "globe",
+        "badgeColor": "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-900/40 dark:text-rose-300 dark:border-rose-800"
+      },
+      {
+        "id": "conf_mon",
+        "name": "Confidence Monitor",
+        "category": "Display",
+        "description": "Preacher stage timer, speaker confidence displays & lyric prompts",
+        "icon": "tv",
+        "badgeColor": "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-800"
+      },
+      {
+        "id": "overflow",
+        "name": "Overflow AV",
+        "category": "Systems",
+        "description": "Overflow hall audio/video feed, outdoor sound & network connectivity",
+        "icon": "radio",
+        "badgeColor": "bg-teal-100 text-teal-800 border-teal-300 dark:bg-teal-900/40 dark:text-teal-300 dark:border-teal-800"
+      }
+    ]
+  },
+  "members": [
+    {
+      "id": "mem_aaron",
+      "name": "Aaron",
+      "phone": "+254 700 000000",
+      "email": "aaron@lsdac.org",
+      "skills": [
+        "switcher"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-rose-600 to-red-700"
+    },
+    {
+      "id": "mem_alvin",
+      "name": "Alvin",
+      "phone": "+254 700 000000",
+      "email": "alvin@lsdac.org",
+      "skills": [
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    },
+    {
+      "id": "mem_alvin_ombati",
+      "name": "Alvin Ombati",
+      "phone": "+254 700 000000",
+      "email": "alvin_ombati@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    },
+    {
+      "id": "mem_bahati_cyrus",
+      "name": "Bahati Cyrus",
+      "phone": "+254 700 000000",
+      "email": "bahati_cyrus@lsdac.org",
+      "skills": [
+        "camera",
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-rose-600 to-red-700"
+    },
+    {
+      "id": "mem_beverly",
+      "name": "Beverly",
+      "phone": "+254 700 000000",
+      "email": "beverly@lsdac.org",
+      "skills": [
+        "presentation"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_brinnamel_nyaboke",
+      "name": "Brinnamel Nyaboke",
+      "phone": "+254 700 000000",
+      "email": "brinnamel_nyaboke@lsdac.org",
+      "skills": [
+        "conf_mon",
+        "presentation"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_brolyn_mongare",
+      "name": "Brolyn Mongare",
+      "phone": "+254 700 000000",
+      "email": "brolyn_mongare@lsdac.org",
+      "skills": [
+        "audio"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-teal-600 to-emerald-700"
+    },
+    {
+      "id": "mem_cj",
+      "name": "CJ",
+      "phone": "+254 700 000000",
+      "email": "cj@lsdac.org",
+      "skills": [
+        "conf_mon",
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-rose-600 to-red-700"
+    },
+    {
+      "id": "mem_cedrick_onyikwa",
+      "name": "Cedrick Onyikwa",
+      "phone": "+254 700 000000",
+      "email": "cedrick_onyikwa@lsdac.org",
+      "skills": [
+        "switcher"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_cetrick",
+      "name": "Cetrick",
+      "phone": "+254 700 000000",
+      "email": "cetrick@lsdac.org",
+      "skills": [
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-rose-600 to-red-700"
+    },
+    {
+      "id": "mem_cettoh",
+      "name": "Cettoh",
+      "phone": "+254 700 000000",
+      "email": "cettoh@lsdac.org",
+      "skills": [
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_claris",
+      "name": "Claris",
+      "phone": "+254 700 000000",
+      "email": "claris@lsdac.org",
+      "skills": [
+        "presentation",
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-violet-600 to-purple-700"
+    },
+    {
+      "id": "mem_crystal_norman",
+      "name": "Crystal Norman",
+      "phone": "+254 700 000000",
+      "email": "crystal_norman@lsdac.org",
+      "skills": [
+        "presentation"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_debbie",
+      "name": "Debbie",
+      "phone": "+254 700 000000",
+      "email": "debbie@lsdac.org",
+      "skills": [
+        "presentation"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_ellah",
+      "name": "Ellah",
+      "phone": "+254 700 000000",
+      "email": "ellah@lsdac.org",
+      "skills": [
+        "conf_mon"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-violet-600 to-purple-700"
+    },
+    {
+      "id": "mem_flavier_momanyi",
+      "name": "Flavier Momanyi",
+      "phone": "+254 700 000000",
+      "email": "flavier_momanyi@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    },
+    {
+      "id": "mem_fred_moegi",
+      "name": "Fred Moegi",
+      "phone": "+254 700 000000",
+      "email": "fred_moegi@lsdac.org",
+      "skills": [
+        "audio"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-violet-600 to-purple-700"
+    },
+    {
+      "id": "mem_geoffrey_njora",
+      "name": "Geoffrey Njora",
+      "phone": "+254 700 000000",
+      "email": "geoffrey_njora@lsdac.org",
+      "skills": [
+        "audio"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_harriet",
+      "name": "Harriet",
+      "phone": "+254 700 000000",
+      "email": "harriet@lsdac.org",
+      "skills": [
+        "presentation",
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-cyan-600 to-blue-700"
+    },
+    {
+      "id": "mem_hazel",
+      "name": "Hazel",
+      "phone": "+254 700 000000",
+      "email": "hazel@lsdac.org",
+      "skills": [
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-cyan-600 to-blue-700"
+    },
+    {
+      "id": "mem_jeremie_sekamonyo",
+      "name": "Jeremie Sekamonyo",
+      "phone": "+254 700 000000",
+      "email": "jeremie_sekamonyo@lsdac.org",
+      "skills": [
+        "switcher"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_jerome",
+      "name": "Jerome",
+      "phone": "+254 700 000000",
+      "email": "jerome@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-cyan-600 to-blue-700"
+    },
+    {
+      "id": "mem_job_ongarora",
+      "name": "Job Ongarora",
+      "phone": "+254 700 000000",
+      "email": "job_ongarora@lsdac.org",
+      "skills": [
+        "audio"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_lee",
+      "name": "Lee",
+      "phone": "+254 700 000000",
+      "email": "lee@lsdac.org",
+      "skills": [
+        "switcher",
+        "conf_mon"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_lokorio",
+      "name": "Lokorio",
+      "phone": "+254 700 000000",
+      "email": "lokorio@lsdac.org",
+      "skills": [
+        "conf_mon",
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-violet-600 to-purple-700"
+    },
+    {
+      "id": "mem_maryleen_boyani",
+      "name": "Maryleen Boyani",
+      "phone": "+254 700 000000",
+      "email": "maryleen_boyani@lsdac.org",
+      "skills": [
+        "switcher",
+        "audio"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_mathias",
+      "name": "Mathias",
+      "phone": "+254 700 000000",
+      "email": "mathias@lsdac.org",
+      "skills": [
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-teal-600 to-emerald-700"
+    },
+    {
+      "id": "mem_melchi",
+      "name": "Melchi",
+      "phone": "+254 700 000000",
+      "email": "melchi@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-teal-600 to-emerald-700"
+    },
+    {
+      "id": "mem_mwangi",
+      "name": "Mwangi",
+      "phone": "+254 700 000000",
+      "email": "mwangi@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    },
+    {
+      "id": "mem_nathan",
+      "name": "Nathan",
+      "phone": "+254 700 000000",
+      "email": "nathan@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-violet-600 to-purple-700"
+    },
+    {
+      "id": "mem_purity",
+      "name": "Purity",
+      "phone": "+254 700 000000",
+      "email": "purity@lsdac.org",
+      "skills": [
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-rose-600 to-red-700"
+    },
+    {
+      "id": "mem_queen_mogusu",
+      "name": "Queen Mogusu",
+      "phone": "+254 700 000000",
+      "email": "queen_mogusu@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_rehema_jane",
+      "name": "Rehema Jane",
+      "phone": "+254 700 000000",
+      "email": "rehema_jane@lsdac.org",
+      "skills": [
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_richalfred_kissinger",
+      "name": "Richalfred Kissinger",
+      "phone": "+254 700 000000",
+      "email": "richalfred_kissinger@lsdac.org",
+      "skills": [
+        "switcher"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_robin",
+      "name": "Robin",
+      "phone": "+254 700 000000",
+      "email": "robin@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_roy_mbera",
+      "name": "Roy Mbera",
+      "phone": "+254 700 000000",
+      "email": "roy_mbera@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    },
+    {
+      "id": "mem_sam_moegi",
+      "name": "Sam Moegi",
+      "phone": "+254 700 000000",
+      "email": "sam_moegi@lsdac.org",
+      "skills": [
+        "switcher"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-teal-600 to-emerald-700"
+    },
+    {
+      "id": "mem_tema",
+      "name": "Tema",
+      "phone": "+254 700 000000",
+      "email": "tema@lsdac.org",
+      "skills": [
+        "conf_mon"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-cyan-600 to-blue-700"
+    },
+    {
+      "id": "mem_temah_nyanchama",
+      "name": "Temah Nyanchama",
+      "phone": "+254 700 000000",
+      "email": "temah_nyanchama@lsdac.org",
+      "skills": [
+        "presentation"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-emerald-600 to-teal-700"
+    },
+    {
+      "id": "mem_valery_aleyo",
+      "name": "Valery Aleyo",
+      "phone": "+254 700 000000",
+      "email": "valery_aleyo@lsdac.org",
+      "skills": [
+        "camera"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-blue-600 to-indigo-700"
+    },
+    {
+      "id": "mem_viridiana_alice",
+      "name": "Viridiana Alice",
+      "phone": "+254 700 000000",
+      "email": "viridiana_alice@lsdac.org",
+      "skills": [
+        "online"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-purple-600 to-pink-700"
+    },
+    {
+      "id": "mem_waylon",
+      "name": "Waylon",
+      "phone": "+254 700 000000",
+      "email": "waylon@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-teal-600 to-emerald-700"
+    },
+    {
+      "id": "mem_xavier",
+      "name": "Xavier",
+      "phone": "+254 700 000000",
+      "email": "xavier@lsdac.org",
+      "skills": [
+        "overflow"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-cyan-600 to-blue-700"
+    },
+    {
+      "id": "mem_yvonne",
+      "name": "Yvonne",
+      "phone": "+254 700 000000",
+      "email": "yvonne@lsdac.org",
+      "skills": [
+        "stage"
+      ],
+      "status": "Active",
+      "unavailableDates": [],
+      "avatarColor": "from-amber-600 to-orange-700"
+    }
+  ],
+  "rotas": [
+    {
+      "id": "rota_2026-09-05",
+      "date": "2026-09-05",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_geoffrey_njora",
+        "switcher": "mem_cedrick_onyikwa",
+        "camera": "mem_roy_mbera",
+        "presentation": "mem_debbie",
+        "stage": "mem_cetrick",
+        "online": "mem_harriet",
+        "conf_mon": "mem_lokorio",
+        "overflow": "mem_melchi"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-09-12",
+      "date": "2026-09-12",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_job_ongarora",
+        "switcher": "mem_jeremie_sekamonyo",
+        "camera": "mem_alvin_ombati",
+        "presentation": "mem_crystal_norman",
+        "stage": "mem_bahati_cyrus",
+        "online": "mem_hazel",
+        "conf_mon": "mem_ellah",
+        "overflow": "mem_waylon"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-09-19",
+      "date": "2026-09-19",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_maryleen_boyani",
+        "switcher": "mem_lee",
+        "camera": "mem_flavier_momanyi",
+        "presentation": "mem_harriet",
+        "stage": "mem_cettoh",
+        "online": "mem_purity",
+        "conf_mon": "mem_tema",
+        "overflow": "mem_nathan"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-09-26",
+      "date": "2026-09-26",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_brolyn_mongare",
+        "switcher": "mem_maryleen_boyani",
+        "camera": "mem_queen_mogusu",
+        "presentation": "mem_beverly",
+        "stage": "mem_alvin",
+        "online": "mem_rehema_jane",
+        "conf_mon": "mem_cj",
+        "overflow": "mem_xavier"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-10-03",
+      "date": "2026-10-03",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_fred_moegi",
+        "switcher": "mem_sam_moegi",
+        "camera": "mem_valery_aleyo",
+        "presentation": "mem_brinnamel_nyaboke",
+        "stage": "mem_yvonne",
+        "online": "mem_viridiana_alice",
+        "conf_mon": "mem_lee",
+        "overflow": "mem_cj"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-10-10",
+      "date": "2026-10-10",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_geoffrey_njora",
+        "switcher": "mem_aaron",
+        "camera": "mem_jerome",
+        "presentation": "mem_claris",
+        "stage": "mem_mathias",
+        "online": "mem_claris",
+        "conf_mon": "mem_brinnamel_nyaboke",
+        "overflow": "mem_lokorio"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-10-17",
+      "date": "2026-10-17",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_job_ongarora",
+        "switcher": "mem_richalfred_kissinger",
+        "camera": "mem_bahati_cyrus",
+        "presentation": "mem_temah_nyanchama",
+        "stage": "mem_cetrick",
+        "online": "mem_harriet",
+        "conf_mon": "mem_lokorio",
+        "overflow": "mem_mwangi"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-10-24",
+      "date": "2026-10-24",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_maryleen_boyani",
+        "switcher": "mem_cedrick_onyikwa",
+        "camera": "mem_roy_mbera",
+        "presentation": "mem_debbie",
+        "stage": "mem_bahati_cyrus",
+        "online": "mem_hazel",
+        "conf_mon": "mem_ellah",
+        "overflow": "mem_robin"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-10-31",
+      "date": "2026-10-31",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_brolyn_mongare",
+        "switcher": "mem_jeremie_sekamonyo",
+        "camera": "mem_alvin_ombati",
+        "presentation": "mem_crystal_norman",
+        "stage": "mem_cettoh",
+        "online": "mem_purity",
+        "conf_mon": "mem_tema",
+        "overflow": "mem_melchi"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-11-07",
+      "date": "2026-11-07",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_fred_moegi",
+        "switcher": "mem_lee",
+        "camera": "mem_flavier_momanyi",
+        "presentation": "mem_harriet",
+        "stage": "mem_alvin",
+        "online": "mem_rehema_jane",
+        "conf_mon": "mem_cj",
+        "overflow": "mem_waylon"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-11-14",
+      "date": "2026-11-14",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_geoffrey_njora",
+        "switcher": "mem_maryleen_boyani",
+        "camera": "mem_queen_mogusu",
+        "presentation": "mem_beverly",
+        "stage": "mem_yvonne",
+        "online": "mem_viridiana_alice",
+        "conf_mon": "mem_lee",
+        "overflow": "mem_nathan"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-11-21",
+      "date": "2026-11-21",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_job_ongarora",
+        "switcher": "mem_sam_moegi",
+        "camera": "mem_valery_aleyo",
+        "presentation": "mem_brinnamel_nyaboke",
+        "stage": "mem_mathias",
+        "online": "mem_claris",
+        "conf_mon": "mem_brinnamel_nyaboke",
+        "overflow": "mem_xavier"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-11-28",
+      "date": "2026-11-28",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_maryleen_boyani",
+        "switcher": "mem_aaron",
+        "camera": "mem_jerome",
+        "presentation": "mem_claris",
+        "stage": "mem_cetrick",
+        "online": "mem_harriet",
+        "conf_mon": "mem_lokorio",
+        "overflow": "mem_cj"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T10:40:00Z"
+    }
+  ],
+  "swaps": [],
+  "announcements": [
+    {
+      "id": "ann_1",
+      "title": "Quarter 4 Media & ICT Duty Schedule Published",
+      "content": "Official ICT Duty Rota for September to November 2026 is active. All team members on duty should report to the booth by 08:00 AM sharp.",
+      "date": "2026-09-01",
+      "priority": "High",
+      "author": "Aaron (ICT Coordinator)"
+    },
+    {
+      "id": "ann_2",
+      "title": "Audio & Video Switcher Pre-Service Warmup Protocol",
+      "content": "Kindly test all podium wireless mics, confidence displays, and YouTube stream keys 30 minutes before Sabbath School begins.",
+      "date": "2026-09-01",
+      "priority": "Medium",
+      "author": "ICT Lead"
+    }
+  ]
+}

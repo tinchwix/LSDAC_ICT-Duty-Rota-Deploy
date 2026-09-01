@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LSDAC ICT Duty Roster (Sept - Nov 2026)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            lsdac: {
+              50: '#f0f5ff',
+              100: '#e0ecff',
+              500: '#2563eb',
+              800: '#1e3a8a',
+              900: '#0f172a',
+              gold: '#d97706',
+              goldLight: '#fef3c7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased pb-20 sm:pb-8 selection:bg-blue-600 selection:text-white">
+
+  <!-- Top Sticky Header -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-16">
+        
+        <!-- Church Brand Title -->
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-blue-600 to-blue-800 flex items-center justify-center shadow-md text-white font-black text-sm sm:text-lg border border-white/10 flex-shrink-0">
+            ✝
+          </div>
+          <div class="truncate">
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-xs sm:text-base tracking-tight text-white font-heading truncate">LSDAC ICT ROTA</span>
+              <span id="admin-status-badge" class="hidden text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 flex items-center gap-1">
+                <i data-lucide="shield-check" class="w-2.5 h-2.5"></i> Admin
+              </span>
+            </div>
+            <p class="text-[10px] sm:text-xs text-slate-400 font-medium truncate">Media & Communication • Aaron</p>
+          </div>
+        </div>
+
+        <!-- Quick Header Actions -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2.5">
+          <button id="admin-toggle-btn" onclick="AdminAuth.toggle()" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold shadow-sm transition" title="Toggle Admin Mode">
+            <i id="admin-lock-icon" data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span id="admin-lock-text" class="hidden sm:inline">Admin Login</span>
+          </button>
+          
+          <button onclick="App.openAddSabbathModal()" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-600 active:bg-blue-700 text-white text-xs font-bold shadow-sm transition">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">+ Add Sabbath</span>
+          </button>
+          
+          <button onclick="ExportHub.copyWhatsAppRota(App.selectedDate)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 active:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">
+            <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">WhatsApp</span>
+          </button>
+
+          <button id="theme-toggle-btn" class="p-2 rounded-lg bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition" title="Toggle Dark/Light Mode">
+            <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+            <i data-lucide="sun" class="w-4 h-4 hidden dark:inline"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation Tabs Bar (Hidden on Mobile) -->
+    <div class="hidden sm:block bg-slate-900/90 border-t border-slate-800/80 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex space-x-1 overflow-x-auto py-2 no-scrollbar">
+        <button onclick="App.switchTab('matrix')" data-tab="matrix" class="nav-link px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 whitespace-nowrap bg-blue-700 text-white transition">
+          <i data-lucide="table" class="w-4 h-4"></i> Roster Matrix
+        </button>
+        <button onclick="App.switchTab('rota')" data-tab="rota" class="nav-link px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 whitespace-nowrap text-slate-300 hover:bg-blue-800/60 transition">
+          <i data-lucide="calendar" class="w-4 h-4"></i> Sabbath Booth View
+        </button>
+        <button onclick="App.switchTab('members')" data-tab="members" class="nav-link px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 whitespace-nowrap text-slate-300 hover:bg-blue-800/60 transition">
+          <i data-lucide="users" class="w-4 h-4"></i> Team Directory (44)
+        </button>
+        <button onclick="App.switchTab('swaps')" data-tab="swaps" class="nav-link px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 whitespace-nowrap text-slate-300 hover:bg-blue-800/60 transition">
+          <i data-lucide="repeat" class="w-4 h-4"></i> Duty Swaps
+        </button>
+        <button onclick="App.switchTab('export')" data-tab="export" class="nav-link px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 whitespace-nowrap text-slate-300 hover:bg-blue-800/60 transition">
+          <i data-lucide="file-text" class="w-4 h-4"></i> Export Hub
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Bottom App Bar (Optimized for Thumb Reach) -->
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 flex justify-around items-center px-1 py-1.5 shadow-2xl safe-bottom">
+    <button onclick="App.switchTab('matrix')" data-tab="matrix" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center py-1 text-blue-400 font-bold transition">
+      <i data-lucide="table" class="w-4 h-4"></i>
+      <span class="text-[10px] mt-0.5">Schedule</span>
+    </button>
+    <button onclick="App.switchTab('rota')" data-tab="rota" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="calendar" class="w-4 h-4"></i>
+      <span class="text-[10px] mt-0.5">Booth</span>
+    </button>
+    <button onclick="App.switchTab('members')" data-tab="members" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="users" class="w-4 h-4"></i>
+      <span class="text-[10px] mt-0.5">Team</span>
+    </button>
+    <button onclick="App.switchTab('swaps')" data-tab="swaps" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="repeat" class="w-4 h-4"></i>
+      <span class="text-[10px] mt-0.5">Swaps</span>
+    </button>
+    <button onclick="App.switchTab('export')" data-tab="export" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition">
+      <i data-lucide="share-2" class="w-4 h-4"></i>
+      <span class="text-[10px] mt-0.5">Share</span>
+    </button>
+  </nav>
+
+  <!-- Printable Header (Only Visible When Printing) -->
+  <div class="print-only hidden p-4 text-center border-b-2 border-slate-900 mb-4">
+    <h1 class="text-xl font-black uppercase text-slate-900">MEDIA & COMMUNICATION ICT DUTY ROSTER</h1>
+    <h2 class="text-base font-bold text-slate-700">Schedule for September – November 2026 • Aaron</h2>
+    <p class="text-xs text-slate-500 mt-0.5">Lavington Seventh-day Adventist Church</p>
+  </div>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 space-y-4 sm:space-y-6">
+
+    <!-- ==================== 1. FULL ROSTER MATRIX / CARD VIEW ==================== -->
+    <section id="view-matrix" class="tab-view space-y-4">
+      
+      <!-- Top Mobile Live Status & Quick Member Filter -->
+      <div class="glass-card p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
+        
+        <!-- Live Countdown Alert & Add Week Button -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-[11px] text-amber-800 dark:text-amber-300 font-semibold">
+          <div class="flex items-center gap-1.5 truncate">
+            <i data-lucide="clock" class="w-3.5 h-3.5 flex-shrink-0 text-amber-600 animate-pulse"></i>
+            <span id="sabbath-countdown" class="truncate">Next Sabbath in countdown...</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="App.openAddSabbathModal()" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold flex items-center gap-1 shadow-sm">
+              <i data-lucide="plus-circle" class="w-3 h-3"></i> Add New Week
+            </button>
+            <button onclick="App.jumpToBoothView(App.selectedDate)" class="px-2.5 py-1 bg-amber-200 dark:bg-amber-800/80 rounded text-[10px] font-bold text-amber-950 dark:text-amber-100 flex-shrink-0">
+              View Current
+            </button>
+          </div>
+        </div>
+
+        <!-- "Find My Duty" Mobile Search & Month Pills -->
+        <div class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+          <div class="flex items-center space-x-1 overflow-x-auto no-scrollbar pb-1 sm:pb-0" id="matrix-month-pills-container"></div>
+
+          <!-- Mobile View Switcher (Cards vs Table) -->
+          <div class="flex items-center gap-2">
+            <div class="relative flex-1 sm:w-56">
+              <i data-lucide="search" class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400"></i>
+              <input id="matrix-search-input" oninput="App.searchMatrix(this.value)" type="text" placeholder="Find my name / duty..." class="w-full pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+            
+            <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 flex-shrink-0">
+              <button onclick="App.setMatrixDisplayMode('cards')" id="btn-mode-cards" class="px-2 py-1 rounded-md text-[11px] font-bold bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs" title="Mobile Card View">
+                <i data-lucide="layout-list" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="App.setMatrixDisplayMode('table')" id="btn-mode-table" class="px-2 py-1 rounded-md text-[11px] font-semibold text-slate-500 dark:text-slate-400" title="Full Grid Table">
+                <i data-lucide="table" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Tables Matrix / Cards Container -->
+      <div id="matrix-tables-container" class="space-y-4 sm:space-y-6"></div>
+    </section>
+
+    <!-- ==================== 2. SABBATH BOOTH VIEW ==================== -->
+    <section id="view-rota" class="tab-view hidden space-y-4">
+      
+      <!-- Date Bar & Controls -->
+      <div class="glass-card p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 id="rota-header-date" class="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading">Sabbath Duty Schedule</h2>
+            <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Assigned booth stations & attendance check-in.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button onclick="App.autoFillCurrentSabbath()" class="px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-950 text-xs font-bold shadow-sm transition flex items-center gap-1">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span>Auto-Fill Roles</span>
+            </button>
+            <button onclick="ExportHub.copyWhatsAppRota(App.selectedDate)" class="px-3 py-1.5 rounded-lg bg-emerald-600 active:bg-emerald-700 text-white text-xs font-bold shadow-sm transition flex items-center gap-1">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> <span>WhatsApp</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sabbath Date Selector Pills & Delete Option -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-1.5">
+          <div id="month-selector-pills" class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar flex-1"></div>
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <button onclick="App.openAddSabbathModal()" class="px-2 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1" title="Add Next Sabbath">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Add</span>
+            </button>
+            <button onclick="App.deleteSabbathPrompt(App.selectedDate)" class="p-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-600 border border-slate-200 dark:border-slate-700" title="Delete this Sabbath">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conflicts & Warnings Alert Banner -->
+      <div id="rota-conflicts-banner" class="hidden p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/60 text-amber-900 dark:text-amber-200 text-xs"></div>
+
+      <!-- Sabbath Service Metadata (Theme, Preacher, Lead Notes) -->
+      <div class="glass-card p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Sermon / Sabbath Theme</label>
+          <input id="rota-theme-display" type="text" placeholder="e.g. Walking in Divine Faithfulness" class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Booth Notes & Reminders</label>
+          <div class="flex gap-1.5">
+            <input id="rota-notes-display" type="text" placeholder="e.g. Test pulpit lapel mic for guest speaker" class="flex-1 px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <button onclick="App.saveRotaNotes()" class="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 text-white rounded-lg text-xs font-semibold">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roster Grid (All 8 Official Roles) -->
+      <div id="rota-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+    </section>
+
+    <!-- ==================== 3. TEAM DIRECTORY VIEW ==================== -->
+    <section id="view-members" class="tab-view hidden space-y-4">
+      <div class="glass-card p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading">ICT Team Directory</h2>
+          <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Personnel skills and contact directory.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1 sm:w-56">
+            <i data-lucide="search" class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400"></i>
+            <input id="member-search-input" type="text" placeholder="Search members..." class="w-full pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <button onclick="MembersModule.openAddMemberModal()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow-sm flex items-center gap-1 whitespace-nowrap">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> <span>Add</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Members Grid -->
+      <div id="members-list-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    </section>
+
+    <!-- ==================== 4. DUTY SWAPS VIEW ==================== -->
+    <section id="view-swaps" class="tab-view hidden space-y-4">
+      <div class="glass-card p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading">Duty Swaps & Cover Desk</h2>
+          <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Request cover if you are traveling or away.</p>
+        </div>
+        <button onclick="SwapsModule.openRequestSwapModal()" class="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow-sm flex items-center gap-1.5 w-full sm:w-auto justify-center">
+          <i data-lucide="repeat" class="w-3.5 h-3.5"></i> New Swap Request
+        </button>
+      </div>
+
+      <div id="swaps-list-container" class="space-y-3"></div>
+    </section>
+
+    <!-- ==================== 5. EXPORT & HUB VIEW ==================== -->
+    <section id="view-export" class="tab-view hidden space-y-4">
+      <div class="glass-card p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
+        <div>
+          <h2 class="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading">Export & Communication Hub</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Share to WhatsApp, print rosters, or download spreadsheets.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- WhatsApp Card -->
+          <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-emerald-50/50 dark:bg-emerald-950/20 space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-xs">WhatsApp Group Broadcast</h3>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">Clean emoji-formatted duty roster text ready to paste into the official WhatsApp chat.</p>
+            <button onclick="ExportHub.copyWhatsAppRota(App.selectedDate)" class="w-full py-2 bg-emerald-600 active:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow transition">
+              Copy Formatted Message
+            </button>
+          </div>
+
+          <!-- Printable Bulletin Card -->
+          <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-blue-50/50 dark:bg-blue-950/20 space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-xs">Printable Roster Sheet</h3>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">Print high-res bulletin inserts or laminated booth reference sheets.</p>
+            <button onclick="window.print()" class="w-full py-2 bg-blue-600 active:bg-blue-700 text-white rounded-lg text-xs font-bold shadow transition">
+              Print / Save PDF
+            </button>
+          </div>
+
+          <!-- CSV Archive Card -->
+          <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-purple-50/50 dark:bg-purple-950/20 space-y-2">
+            <div class="w-9 h-9 rounded-lg bg-purple-600 text-white flex items-center justify-center shadow">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-xs">Excel & CSV Spreadsheet</h3>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">Download complete structured CSV spreadsheets of duty assignments.</p>
+            <button onclick="ExportHub.downloadCSV()" class="w-full py-2 bg-purple-600 active:bg-purple-700 text-white rounded-lg text-xs font-bold shadow transition">
+              Download CSV
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Admin Login PIN Modal -->
+  <div id="admin-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 modal-sheet hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center space-x-2">
+          <div class="w-7 h-7 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Coordinator PIN Unlock</h3>
+        </div>
+        <button onclick="AdminAuth.closeLoginModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="AdminAuth.verifyPin(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Enter Admin PIN</label>
+          <input id="admin-pin-input" required type="password" placeholder="••••" maxlength="12" class="w-full px-3 py-2 text-center text-lg font-mono tracking-widest rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          <p id="admin-pin-error" class="hidden text-xs text-rose-500 font-semibold mt-1 text-center"></p>
+          <p class="text-[10px] text-slate-400 mt-1.5 text-center">Default PIN: <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono">7777</code></p>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="AdminAuth.closeLoginModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-sm flex items-center gap-1">
+            <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            <span>Unlock</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add New Week / Sabbath Modal -->
+  <div id="add-sabbath-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 modal-sheet hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center space-x-2">
+          <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center">
+            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm">Add New Sabbath / Week</h3>
+        </div>
+        <button onclick="App.closeAddSabbathModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="App.saveNewSabbath(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Sabbath Date (Saturday) *</label>
+          <input id="new-sabbath-date" required type="date" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">Automatically calculates the next consecutive Sabbath.</p>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Sermon / Service Theme</label>
+          <input id="new-sabbath-theme" type="text" placeholder="e.g. Sabbath Divine Worship" value="Sabbath Divine Worship" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Auto-Assign Toggle -->
+        <div class="p-3 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/50 flex items-start space-x-3">
+          <input id="new-sabbath-auto-assign" type="checkbox" checked class="mt-0.5 rounded text-blue-600 focus:ring-blue-500 w-4 h-4">
+          <div>
+            <label for="new-sabbath-auto-assign" class="font-bold text-xs text-blue-900 dark:text-blue-200 cursor-pointer flex items-center gap-1.5">
+              <span>⚡ Auto-Assign Qualified Participants</span>
+            </label>
+            <p class="text-[10px] text-blue-700 dark:text-blue-300 mt-0.5">
+              Uses smart fair-rotation algorithm to select skilled team members while balancing total duty counts and avoiding leaves.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="App.closeAddSabbathModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 active:bg-blue-700 text-white text-xs font-bold shadow-sm flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Add & Schedule</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Member Modal -->
+  <div id="member-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 modal-sheet hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-3.5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800">
+        <h3 id="member-modal-title" class="font-bold text-slate-900 dark:text-white text-sm">Add ICT Team Member</h3>
+        <button onclick="MembersModule.closeMemberModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="MembersModule.saveMemberFromModal(event)" class="space-y-3">
+        <input type="hidden" id="member-id">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name *</label>
+          <input id="member-name" required type="text" placeholder="e.g. Geoffrey Njora" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Phone *</label>
+            <input id="member-phone" required type="text" placeholder="+254 7..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Email</label>
+            <input id="member-email" type="email" placeholder="name@lsdac.org" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Unavailable Dates (YYYY-MM-DD)</label>
+          <input id="member-unavailable" type="text" placeholder="e.g. 2026-09-12, 2026-09-19" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Qualified Skills / Roles</label>
+          <div id="member-skills-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-36 overflow-y-auto p-1"></div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="MembersModule.closeMemberModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 active:bg-blue-700 text-white text-xs font-bold shadow-sm">Save Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Role Slot Assignment Modal -->
+  <div id="assign-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 modal-sheet hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800">
+        <h3 id="assign-modal-role-title" class="font-bold text-slate-900 dark:text-white text-sm">Assign Role</h3>
+        <button onclick="App.closeAssignModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="App.saveSlotAssignment(event)" class="space-y-3.5">
+        <input type="hidden" id="assign-role-id">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Select Team Member on Duty</label>
+          <select id="assign-member-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></select>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2.5 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="App.closeAssignModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 active:bg-blue-700 text-white text-xs font-bold shadow-sm">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Request Swap Modal -->
+  <div id="swap-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-3 modal-sheet hidden">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-3 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="font-bold text-slate-900 dark:text-white text-sm">Request Duty Swap</h3>
+        <button onclick="SwapsModule.closeRequestSwapModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="SwapsModule.submitSwapRequest(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Requester (You) *</label>
+          <select id="swap-requester-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Sabbath Date *</label>
+            <select id="swap-sabbath-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"></select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Assigned Role *</label>
+            <select id="swap-role-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"></select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Proposed Replacement Member</label>
+          <select id="swap-replacement-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"></select>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Reason for Swap</label>
+          <textarea id="swap-reason" rows="2" placeholder="e.g. Traveling upcountry for family event" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2.5 border-t border-slate-100 dark:border-slate-800">
+          <button type="button" onclick="SwapsModule.closeRequestSwapModal()" class="px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 active:bg-blue-700 text-white text-xs font-bold shadow-sm">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/rota.js"></script>
+  <script src="js/members.js"></script>
+  <script src="js/swaps.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
