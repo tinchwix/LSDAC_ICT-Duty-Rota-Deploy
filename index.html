@@ -49,6 +49,7 @@
               </span>
             </div>
             <p class="text-[10px] sm:text-xs text-slate-400 font-medium truncate">Media & Communication • Aaron</p>
+            <p id="sync-status" class="text-[9px] text-slate-500 font-medium">⏳ Connecting...</p>
           </div>
         </div>
 
@@ -521,6 +522,12 @@
       </form>
     </div>
   </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- Supabase Config (paste your credentials in js/supabase-config.js) -->
+  <script src="js/supabase-config.js"></script>
 
   <!-- Core Scripts -->
   <script src="js/auth.js"></script>
