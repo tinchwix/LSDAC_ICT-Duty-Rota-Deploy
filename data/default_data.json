@@ -91,540 +91,640 @@
   },
   "members": [
     {
-      "id": "mem_aaron",
-      "name": "Aaron",
-      "phone": "+254 700 000000",
-      "email": "aaron@lsdac.org",
-      "skills": [
-        "switcher"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-rose-600 to-red-700"
-    },
-    {
-      "id": "mem_alvin",
-      "name": "Alvin",
-      "phone": "+254 700 000000",
-      "email": "alvin@lsdac.org",
-      "skills": [
-        "stage"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
-    },
-    {
-      "id": "mem_alvin_ombati",
-      "name": "Alvin Ombati",
-      "phone": "+254 700 000000",
-      "email": "alvin_ombati@lsdac.org",
-      "skills": [
-        "camera"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
-    },
-    {
-      "id": "mem_bahati_cyrus",
-      "name": "Bahati Cyrus",
-      "phone": "+254 700 000000",
-      "email": "bahati_cyrus@lsdac.org",
-      "skills": [
-        "camera",
-        "stage"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-rose-600 to-red-700"
-    },
-    {
-      "id": "mem_beverly",
-      "name": "Beverly",
-      "phone": "+254 700 000000",
-      "email": "beverly@lsdac.org",
-      "skills": [
-        "presentation"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
-    },
-    {
-      "id": "mem_brinnamel_nyaboke",
-      "name": "Brinnamel Nyaboke",
-      "phone": "+254 700 000000",
-      "email": "brinnamel_nyaboke@lsdac.org",
-      "skills": [
-        "conf_mon",
-        "presentation"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
-    },
-    {
-      "id": "mem_brolyn_mongare",
-      "name": "Brolyn Mongare",
-      "phone": "+254 700 000000",
-      "email": "brolyn_mongare@lsdac.org",
+      "id": "member_001",
+      "name": "Adam Korir",
+      "phone": "+254723974756",
+      "email": "",
+      "role": "ICT Member",
       "skills": [
         "audio"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-teal-600 to-emerald-700"
-    },
-    {
-      "id": "mem_cj",
-      "name": "CJ",
-      "phone": "+254 700 000000",
-      "email": "cj@lsdac.org",
-      "skills": [
-        "conf_mon",
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-rose-600 to-red-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
       "id": "mem_cedrick_onyikwa",
       "name": "Cedrick Onyikwa",
-      "phone": "+254 700 000000",
+      "phone": "+254791255565",
       "email": "cedrick_onyikwa@lsdac.org",
+      "role": "ICT Member",
       "skills": [
         "switcher"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
-      "id": "mem_cetrick",
-      "name": "Cetrick",
-      "phone": "+254 700 000000",
-      "email": "cetrick@lsdac.org",
-      "skills": [
-        "stage"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-rose-600 to-red-700"
-    },
-    {
-      "id": "mem_cettoh",
-      "name": "Cettoh",
-      "phone": "+254 700 000000",
-      "email": "cettoh@lsdac.org",
-      "skills": [
-        "stage"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
-    },
-    {
-      "id": "mem_claris",
-      "name": "Claris",
-      "phone": "+254 700 000000",
-      "email": "claris@lsdac.org",
-      "skills": [
-        "presentation",
-        "online"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-violet-600 to-purple-700"
-    },
-    {
-      "id": "mem_crystal_norman",
-      "name": "Crystal Norman",
-      "phone": "+254 700 000000",
-      "email": "crystal_norman@lsdac.org",
-      "skills": [
-        "presentation"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
-    },
-    {
-      "id": "mem_debbie",
-      "name": "Debbie",
-      "phone": "+254 700 000000",
-      "email": "debbie@lsdac.org",
-      "skills": [
-        "presentation"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
-    },
-    {
-      "id": "mem_ellah",
-      "name": "Ellah",
-      "phone": "+254 700 000000",
-      "email": "ellah@lsdac.org",
-      "skills": [
-        "conf_mon"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-violet-600 to-purple-700"
-    },
-    {
-      "id": "mem_flavier_momanyi",
-      "name": "Flavier Momanyi",
-      "phone": "+254 700 000000",
-      "email": "flavier_momanyi@lsdac.org",
+      "id": "member_003",
+      "name": "Noah Edwards",
+      "phone": "+254748177414",
+      "email": "",
+      "role": "ICT Member",
       "skills": [
         "camera"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
-    },
-    {
-      "id": "mem_fred_moegi",
-      "name": "Fred Moegi",
-      "phone": "+254 700 000000",
-      "email": "fred_moegi@lsdac.org",
-      "skills": [
-        "audio"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-violet-600 to-purple-700"
-    },
-    {
-      "id": "mem_geoffrey_njora",
-      "name": "Geoffrey Njora",
-      "phone": "+254 700 000000",
-      "email": "geoffrey_njora@lsdac.org",
-      "skills": [
-        "audio"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
-    },
-    {
-      "id": "mem_harriet",
-      "name": "Harriet",
-      "phone": "+254 700 000000",
-      "email": "harriet@lsdac.org",
-      "skills": [
-        "presentation",
-        "online"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-cyan-600 to-blue-700"
-    },
-    {
-      "id": "mem_hazel",
-      "name": "Hazel",
-      "phone": "+254 700 000000",
-      "email": "hazel@lsdac.org",
-      "skills": [
-        "online"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-cyan-600 to-blue-700"
-    },
-    {
-      "id": "mem_jeremie_sekamonyo",
-      "name": "Jeremie Sekamonyo",
-      "phone": "+254 700 000000",
-      "email": "jeremie_sekamonyo@lsdac.org",
-      "skills": [
-        "switcher"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
-    },
-    {
-      "id": "mem_jerome",
-      "name": "Jerome",
-      "phone": "+254 700 000000",
-      "email": "jerome@lsdac.org",
-      "skills": [
-        "camera"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-cyan-600 to-blue-700"
-    },
-    {
-      "id": "mem_job_ongarora",
-      "name": "Job Ongarora",
-      "phone": "+254 700 000000",
-      "email": "job_ongarora@lsdac.org",
-      "skills": [
-        "audio"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
-    },
-    {
-      "id": "mem_lee",
-      "name": "Lee",
-      "phone": "+254 700 000000",
-      "email": "lee@lsdac.org",
-      "skills": [
-        "switcher",
-        "conf_mon"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
-    },
-    {
-      "id": "mem_lokorio",
-      "name": "Lokorio",
-      "phone": "+254 700 000000",
-      "email": "lokorio@lsdac.org",
-      "skills": [
-        "conf_mon",
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-violet-600 to-purple-700"
-    },
-    {
-      "id": "mem_maryleen_boyani",
-      "name": "Maryleen Boyani",
-      "phone": "+254 700 000000",
-      "email": "maryleen_boyani@lsdac.org",
-      "skills": [
-        "switcher",
-        "audio"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
-    },
-    {
-      "id": "mem_mathias",
-      "name": "Mathias",
-      "phone": "+254 700 000000",
-      "email": "mathias@lsdac.org",
-      "skills": [
-        "stage"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-teal-600 to-emerald-700"
-    },
-    {
-      "id": "mem_melchi",
-      "name": "Melchi",
-      "phone": "+254 700 000000",
-      "email": "melchi@lsdac.org",
-      "skills": [
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-teal-600 to-emerald-700"
-    },
-    {
-      "id": "mem_mwangi",
-      "name": "Mwangi",
-      "phone": "+254 700 000000",
-      "email": "mwangi@lsdac.org",
-      "skills": [
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
-    },
-    {
-      "id": "mem_nathan",
-      "name": "Nathan",
-      "phone": "+254 700 000000",
-      "email": "nathan@lsdac.org",
-      "skills": [
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-violet-600 to-purple-700"
-    },
-    {
-      "id": "mem_purity",
-      "name": "Purity",
-      "phone": "+254 700 000000",
-      "email": "purity@lsdac.org",
-      "skills": [
-        "online"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-rose-600 to-red-700"
-    },
-    {
-      "id": "mem_queen_mogusu",
-      "name": "Queen Mogusu",
-      "phone": "+254 700 000000",
-      "email": "queen_mogusu@lsdac.org",
-      "skills": [
-        "camera"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
       "id": "mem_rehema_jane",
       "name": "Rehema Jane",
-      "phone": "+254 700 000000",
+      "phone": "+254708845642",
       "email": "rehema_jane@lsdac.org",
+      "role": "ICT Member",
       "skills": [
         "online"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_brolyn_mongare",
+      "name": "Brolyn Mongare",
+      "phone": "+254791389702",
+      "email": "brolyn_mongare@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
       "id": "mem_richalfred_kissinger",
       "name": "Richalfred Kissinger",
-      "phone": "+254 700 000000",
+      "phone": "",
       "email": "richalfred_kissinger@lsdac.org",
+      "role": "ICT Member",
       "skills": [
         "switcher"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
-      "id": "mem_robin",
-      "name": "Robin",
-      "phone": "+254 700 000000",
-      "email": "robin@lsdac.org",
+      "id": "mem_maryleen_boyani",
+      "name": "Maryleen Boyani",
+      "phone": "+254707259809",
+      "email": "maryleen_boyani@lsdac.org",
+      "role": "ICT Member",
       "skills": [
-        "overflow"
+        "switcher",
+        "audio"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
-      "id": "mem_roy_mbera",
-      "name": "Roy Mbera",
-      "phone": "+254 700 000000",
-      "email": "roy_mbera@lsdac.org",
+      "id": "mem_fred_moegi",
+      "name": "Fred Moegi",
+      "phone": "+254738792987",
+      "email": "fred_moegi@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_jeremie_sekamonyo",
+      "name": "Jeremie Sekamonyo",
+      "phone": "+254743300247",
+      "email": "jeremie_sekamonyo@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "switcher"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_010",
+      "name": "Jason Psalms",
+      "phone": "+254746340130",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "switcher"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_011",
+      "name": "Mwambu Makhanu",
+      "phone": "+254736564266",
+      "email": "",
+      "role": "ICT Member",
       "skills": [
         "camera"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
-      "id": "mem_sam_moegi",
-      "name": "Sam Moegi",
-      "phone": "+254 700 000000",
-      "email": "sam_moegi@lsdac.org",
-      "skills": [
-        "switcher"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-teal-600 to-emerald-700"
-    },
-    {
-      "id": "mem_tema",
-      "name": "Tema",
-      "phone": "+254 700 000000",
-      "email": "tema@lsdac.org",
-      "skills": [
-        "conf_mon"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-cyan-600 to-blue-700"
-    },
-    {
-      "id": "mem_temah_nyanchama",
-      "name": "Temah Nyanchama",
-      "phone": "+254 700 000000",
-      "email": "temah_nyanchama@lsdac.org",
+      "id": "member_012",
+      "name": "Nifty",
+      "phone": "",
+      "email": "",
+      "role": "ICT Member",
       "skills": [
         "presentation"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-emerald-600 to-teal-700"
-    },
-    {
-      "id": "mem_valery_aleyo",
-      "name": "Valery Aleyo",
-      "phone": "+254 700 000000",
-      "email": "valery_aleyo@lsdac.org",
-      "skills": [
-        "camera"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-blue-600 to-indigo-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
       "id": "mem_viridiana_alice",
       "name": "Viridiana Alice",
-      "phone": "+254 700 000000",
+      "phone": "+254703402151",
       "email": "viridiana_alice@lsdac.org",
+      "role": "ICT Member",
       "skills": [
         "online"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-purple-600 to-pink-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_hazel",
+      "name": "Hazel Moraa",
+      "phone": "",
+      "email": "hazel@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "online"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_015",
+      "name": "Matthias Warui",
+      "phone": "",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "conf_mon"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_melchi",
+      "name": "Melchizedek Rogito",
+      "phone": "+254728493775",
+      "email": "melchi@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_lee",
+      "name": "James Lee",
+      "phone": "+254701836595",
+      "email": "lee@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "switcher",
+        "conf_mon"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_crystal_norman",
+      "name": "Crystal Norman",
+      "phone": "",
+      "email": "crystal_norman@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "presentation"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_purity",
+      "name": "Winnie Purity",
+      "phone": "",
+      "email": "purity@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "online"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_020",
+      "name": "Debborah Bengo",
+      "phone": "+254703966568",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "presentation"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_job_ongarora",
+      "name": "Job Ongarora",
+      "phone": "",
+      "email": "job_ongarora@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_brinnamel_nyaboke",
+      "name": "Brinnamel Nyaboke",
+      "phone": "",
+      "email": "brinnamel_nyaboke@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "conf_mon",
+        "presentation"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_nathan",
+      "name": "Nathan Onyambu",
+      "phone": "+254733703132",
+      "email": "nathan@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_mwangi",
+      "name": "Samuel Mwangi Macharia",
+      "phone": "+254715516088",
+      "email": "mwangi@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_025_24",
+      "name": "Jobs Robin Kioi",
+      "phone": "+254700340076",
+      "email": "job_ongarora@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_lokorio",
+      "name": "Lokorio Ateyo",
+      "phone": "+254721928934",
+      "email": "lokorio@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "conf_mon",
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_027",
+      "name": "Jayden Kimathi",
+      "phone": "+254721896564",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
       "id": "mem_waylon",
-      "name": "Waylon",
-      "phone": "+254 700 000000",
+      "name": "Waylon Haggai",
+      "phone": "+254727660516",
       "email": "waylon@lsdac.org",
+      "role": "ICT Member",
       "skills": [
         "overflow"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-teal-600 to-emerald-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     },
     {
-      "id": "mem_xavier",
-      "name": "Xavier",
-      "phone": "+254 700 000000",
-      "email": "xavier@lsdac.org",
-      "skills": [
-        "overflow"
-      ],
-      "status": "Active",
-      "unavailableDates": [],
-      "avatarColor": "from-cyan-600 to-blue-700"
-    },
-    {
-      "id": "mem_yvonne",
-      "name": "Yvonne",
-      "phone": "+254 700 000000",
-      "email": "yvonne@lsdac.org",
+      "id": "member_029",
+      "name": "Christian Jeremy",
+      "phone": "+254723341116",
+      "email": "",
+      "role": "ICT Member",
       "skills": [
         "stage"
       ],
-      "status": "Active",
+      "active": true,
       "unavailableDates": [],
-      "avatarColor": "from-amber-600 to-orange-700"
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_jerome",
+      "name": "Jerome Andy Macakiage",
+      "phone": "",
+      "email": "jerome@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_031",
+      "name": "Lucas S. Shingiro",
+      "phone": "+254748090907",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "conf_mon"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_xavier",
+      "name": "Jeff Xavier Ochieng",
+      "phone": "+254726355469",
+      "email": "xavier@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_033",
+      "name": "Niko Momanyi",
+      "phone": "+254723552919",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_harriet",
+      "name": "Harriet Obed",
+      "phone": "+254711818975",
+      "email": "harriet@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "presentation",
+        "online"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_ellah",
+      "name": "Ellah Ombasa",
+      "phone": "+254722158839",
+      "email": "ellah@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "conf_mon"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_roy_mbera",
+      "name": "Roy Mbera",
+      "phone": "+254792650422",
+      "email": "roy_mbera@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_temah_nyanchama",
+      "name": "Temah Nyanchama",
+      "phone": "+254721239152",
+      "email": "temah_nyanchama@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "presentation"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_flavier_momanyi",
+      "name": "Flavier Momanyi",
+      "phone": "",
+      "email": "flavier_momanyi@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_valery_aleyo",
+      "name": "Valery Aleyo",
+      "phone": "",
+      "email": "valery_aleyo@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "member_040",
+      "name": "Karlmax Otieno",
+      "phone": "+254768186474",
+      "email": "",
+      "role": "ICT Member",
+      "skills": [
+        "overflow"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_alvin_ombati",
+      "name": "Alvin Ombati",
+      "phone": "+254701350351",
+      "email": "alvin_ombati@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_yvonne",
+      "name": "Akinyi Yvonne",
+      "phone": "+254713535345",
+      "email": "yvonne@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "stage"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_geoffrey_njora",
+      "name": "Geoffrey Njora",
+      "phone": "+254791219062",
+      "email": "geoffrey_njora@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "audio"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_bahati_cyrus",
+      "name": "Bahati Cyrus",
+      "phone": "+254722405665",
+      "email": "bahati_cyrus@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera",
+        "stage"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
+    },
+    {
+      "id": "mem_queen_mogusu",
+      "name": "Queen Mogusu",
+      "phone": "+254799016276",
+      "email": "queen_mogusu@lsdac.org",
+      "role": "ICT Member",
+      "skills": [
+        "camera"
+      ],
+      "active": true,
+      "unavailableDates": [],
+      "joinDate": "2026-09-05",
+      "dutyCount": 0
     }
   ],
   "rotas": [
@@ -635,7 +735,7 @@
       "preacher": "",
       "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
       "assignments": {
-        "audio": "mem_geoffrey_njora",
+        "audio": "mem_brolyn_mongare",
         "switcher": "mem_cedrick_onyikwa",
         "camera": "mem_roy_mbera",
         "presentation": "mem_debbie",
@@ -644,9 +744,14 @@
         "conf_mon": "mem_lokorio",
         "overflow": "mem_melchi"
       },
-      "checkedIn": [],
+      "checkedIn": [
+        "mem_geoffrey_njora",
+        "mem_cedrick_onyikwa",
+        "mem_roy_mbera",
+        "mem_brolyn_mongare"
+      ],
       "status": "Published",
-      "lastUpdated": "2026-09-01T10:40:00Z"
+      "lastUpdated": "2026-09-01T08:16:05.043Z"
     },
     {
       "id": "rota_2026-09-12",
@@ -884,9 +989,31 @@
         "conf_mon": "mem_lokorio",
         "overflow": "mem_cj"
       },
-      "checkedIn": [],
+      "checkedIn": [
+        "mem_maryleen_boyani"
+      ],
       "status": "Published",
       "lastUpdated": "2026-09-01T10:40:00Z"
+    },
+    {
+      "id": "rota_2026-12-05",
+      "date": "2026-12-05",
+      "theme": "Sabbath Divine Worship",
+      "preacher": "",
+      "dutyLeadNotes": "Report to the ICT desk by 08:00 AM for booth warmup, wireless mic checks, and stream setup.",
+      "assignments": {
+        "audio": "mem_brolyn_mongare",
+        "switcher": "mem_richalfred_kissinger",
+        "camera": "mem_alvin_ombati",
+        "presentation": "mem_temah_nyanchama",
+        "stage": "mem_alvin",
+        "online": "mem_hazel",
+        "conf_mon": "mem_ellah",
+        "overflow": "mem_mwangi"
+      },
+      "checkedIn": [],
+      "status": "Published",
+      "lastUpdated": "2026-09-01T08:00:50.547Z"
     }
   ],
   "swaps": [],
