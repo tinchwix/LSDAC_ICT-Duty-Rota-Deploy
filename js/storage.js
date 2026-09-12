@@ -194,5 +194,61 @@ const StorageService = {
       await this.supabase.from('rota_data').delete().eq('id', 'main');
     }
     window.location.reload();
+  },
+
+  // ─── Audit Log: record admin actions ────────────────────────
+  logAudit(action, details) {
+    try {
+      const log = this.getAuditLog();
+      log.unshift({
+        ts: new Date().toISOString(),
+        action,
+        details
+      });
+      // Keep only last 50 entries
+      localStorage.setItem('lsdac_audit_log', JSON.stringify(log.slice(0, 50)));
+    } catch (e) {
+      console.warn('Audit log write error:', e);
+    }
+  },
+
+  getAuditLog() {
+    try {
+      return JSON.parse(localStorage.getItem('lsdac_audit_log') || '[]');
+    } catch {
+      return [];
+    }
+  },
+
+  clearAuditLog() {
+    localStorage.removeItem('lsdac_audit_log');
+  },
+
+  // ─── Undo: snapshot entire db into sessionStorage ───────────
+  snapshotForUndo() {
+    try {
+      sessionStorage.setItem('lsdac_undo_snapshot', JSON.stringify(this.db));
+    } catch (e) {
+      console.warn('Undo snapshot error:', e);
+    }
+  },
+
+  hasUndoSnapshot() {
+    return !!sessionStorage.getItem('lsdac_undo_snapshot');
+  },
+
+  async undoLastChange() {
+    const raw = sessionStorage.getItem('lsdac_undo_snapshot');
+    if (!raw) return false;
+    try {
+      this.db = JSON.parse(raw);
+      sessionStorage.removeItem('lsdac_undo_snapshot');
+      await this.saveAll();
+      this.logAudit('Undo', 'Reverted last change');
+      return true;
+    } catch (e) {
+      console.error('Undo restore error:', e);
+      return false;
+    }
   }
 };

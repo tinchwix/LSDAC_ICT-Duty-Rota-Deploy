@@ -25,6 +25,15 @@
       }
     }
   </script>
+  <!-- PWA Manifest & Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LSDAC Rota">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="css/styles.css">
@@ -68,6 +77,11 @@
           <button onclick="ExportHub.copyWhatsAppRota(App.selectedDate)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 active:bg-emerald-700 text-white text-xs font-bold shadow-sm transition">
             <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">WhatsApp</span>
+          </button>
+
+          <button id="pwa-install-btn" class="hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-sm transition animate-bounce" title="Install App on Phone/Desktop">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Install App</span>
           </button>
 
           <button id="theme-toggle-btn" class="p-2 rounded-lg bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition" title="Toggle Dark/Light Mode">
@@ -141,10 +155,10 @@
       <div class="glass-card p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
         
         <!-- Live Countdown Alert & Add Week Button -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-[11px] text-amber-800 dark:text-amber-300 font-semibold">
+        <div id="sabbath-countdown-container" class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-[11px] text-amber-800 dark:text-amber-300 font-semibold transition-all">
           <div class="flex items-center gap-1.5 truncate">
-            <i data-lucide="clock" class="w-3.5 h-3.5 flex-shrink-0 text-amber-600 animate-pulse"></i>
-            <span id="sabbath-countdown" class="truncate">Next Sabbath in countdown...</span>
+            <i id="sabbath-countdown-icon" data-lucide="clock" class="w-3.5 h-3.5 flex-shrink-0 text-amber-600 animate-pulse"></i>
+            <span id="sabbath-countdown" class="truncate font-bold">Next Sabbath in countdown...</span>
           </div>
           <div class="flex items-center gap-1.5">
             <button onclick="App.openAddSabbathModal()" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold flex items-center gap-1 shadow-sm">
@@ -179,6 +193,9 @@
         </div>
       </div>
 
+      <!-- Skill Gap Alerts — auto-populated by app.js -->
+      <div id="skill-gap-alerts" class="space-y-2"></div>
+
       <!-- Schedule Tables Matrix / Cards Container -->
       <div id="matrix-tables-container" class="space-y-4 sm:space-y-6"></div>
     </section>
@@ -199,6 +216,10 @@
             </button>
             <button onclick="ExportHub.copyWhatsAppRota(App.selectedDate)" class="px-3 py-1.5 rounded-lg bg-emerald-600 active:bg-emerald-700 text-white text-xs font-bold shadow-sm transition flex items-center gap-1">
               <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> <span>WhatsApp</span>
+            </button>
+            <!-- Undo button — shown only when snapshot exists and user is admin -->
+            <button id="undo-btn" onclick="App.undoLastChange()" class="hidden px-2.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-sm transition flex items-center gap-1" title="Undo last change">
+              <i data-lucide="undo-2" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Undo</span>
             </button>
           </div>
         </div>
@@ -237,6 +258,23 @@
 
       <!-- Roster Grid (All 8 Official Roles) -->
       <div id="rota-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+
+      <!-- Audit Log Panel — Admin Only -->
+      <div id="audit-log-panel" class="hidden glass-card rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <button onclick="App.toggleAuditLog()" class="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+          <div class="flex items-center gap-2">
+            <i data-lucide="history" class="w-3.5 h-3.5 text-slate-500"></i>
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Recent Changes (Audit Log)</span>
+          </div>
+          <i id="audit-log-chevron" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform"></i>
+        </button>
+        <div id="audit-log-body" class="hidden divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
+          <div id="audit-log-entries" class="p-1"></div>
+          <div class="px-4 py-2 flex justify-end">
+            <button onclick="App.clearAuditLog()" class="text-[10px] text-slate-400 hover:text-rose-500 transition font-semibold">Clear Log</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ==================== 3. TEAM DIRECTORY VIEW ==================== -->
@@ -254,6 +292,26 @@
           <button onclick="MembersModule.openAddMemberModal()" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow-sm flex items-center gap-1 whitespace-nowrap">
             <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> <span>Add</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Duty Load Dashboard -->
+      <div class="glass-card rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <button onclick="App.toggleDutyLoadChart()" class="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-blue-500"></i>
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Duty Load Dashboard</span>
+            <span class="text-[10px] text-slate-400 font-medium">— Quarter workload per member</span>
+          </div>
+          <i id="duty-load-chevron" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform"></i>
+        </button>
+        <div id="duty-load-body" class="hidden">
+          <div id="duty-load-chart" class="p-4 space-y-1.5 max-h-72 overflow-y-auto"></div>
+          <div class="px-4 pb-3 flex items-center gap-3 text-[10px] text-slate-500">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span>Low (0–2)</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block"></span>Fair (3–5)</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span>Heavy (6+)</span>
+          </div>
         </div>
       </div>
 
@@ -476,7 +534,11 @@
         <input type="hidden" id="assign-role-id">
         <div>
           <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Select Team Member on Duty</label>
-          <select id="assign-member-select" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></select>
+          <select id="assign-member-select" onchange="App.checkAssignConflicts()" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"></select>
+        </div>
+
+        <!-- Real-time Conflict Alert Box -->
+        <div id="assign-conflict-alert" class="hidden p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-200 space-y-1">
         </div>
 
         <div class="flex justify-end gap-2 pt-2.5 border-t border-slate-100 dark:border-slate-800">
@@ -543,5 +605,15 @@
   <script src="js/swaps.js"></script>
   <script src="js/export.js"></script>
   <script src="js/app.js"></script>
+  <!-- Service Worker Registration for PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registered:', reg.scope))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>

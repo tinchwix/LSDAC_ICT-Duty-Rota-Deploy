@@ -45,6 +45,30 @@ const App = {
       });
     }
 
+    // PWA Install Prompt handling
+    let deferredPrompt = null;
+    const pwaBtn = document.getElementById('pwa-install-btn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (pwaBtn) {
+        pwaBtn.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+      }
+    });
+
+    if (pwaBtn) {
+      pwaBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          pwaBtn.classList.add('hidden');
+        }
+        deferredPrompt = null;
+      });
+    }
+
     // Window resize listener
     window.addEventListener('resize', () => {
       if (window.innerWidth < 768 && this.matrixDisplayMode === 'table' && !this.userExplicitMode) {
@@ -122,6 +146,10 @@ const App = {
     MembersModule.renderMembersList();
     SwapsModule.renderSwapsList();
     AdminAuth.updateAdminUI();
+    this.renderSkillGapAlerts();     // Feature 10
+    this.renderDutyLoadChart();      // Feature 9
+    this.renderAuditLog();           // Feature 12
+    this.updateUndoButton();         // Feature 13
     if (window.lucide) lucide.createIcons();
   },
 
@@ -435,8 +463,10 @@ const App = {
       return;
     }
 
+    StorageService.snapshotForUndo();
     const success = await RotaEngine.deleteSabbath(dateStr);
     if (success) {
+      StorageService.logAudit('Delete Sabbath', `Removed rota for ${dateStr}`);
       const db = StorageService.getData();
       this.selectedDate = db.rotas.length > 0 ? db.rotas[0].date : RotaEngine.formatDate(new Date());
       this.renderAll();
@@ -458,9 +488,11 @@ const App = {
     const db = StorageService.getData();
     const rota = db.rotas.find(r => r.date === this.selectedDate);
     if (rota && assignments) {
+      StorageService.snapshotForUndo();
       rota.assignments = assignments;
       rota.lastUpdated = new Date().toISOString();
       await StorageService.saveAll();
+      StorageService.logAudit('Auto-Fill', `All roles auto-assigned for ${this.selectedDate}`);
       this.renderAll();
       App.showToast("All roles auto-assigned successfully! 🎯");
     }
@@ -473,27 +505,63 @@ const App = {
 
   startSabbathCountdown() {
     const countdownEl = document.getElementById('sabbath-countdown');
+    const containerEl = document.getElementById('sabbath-countdown-container');
+    const iconEl = document.getElementById('sabbath-countdown-icon');
     if (!countdownEl) return;
 
     const updateTimer = () => {
       const now = new Date();
-      const nextSabbath = new Date();
-      const day = now.getDay();
-      const diff = (6 - day + 7) % 7;
-      
-      nextSabbath.setDate(now.getDate() + (diff === 0 && now.getHours() >= 18 ? 7 : diff));
-      nextSabbath.setHours(8, 0, 0, 0);
+      const day = now.getDay(); // 0 is Sunday, 6 is Saturday
+      const currentHour = now.getHours();
+      const currentMin = now.getMinutes();
+      const timeInMinutes = currentHour * 60 + currentMin;
 
-      const totalSec = Math.max(0, Math.floor((nextSabbath - now) / 1000));
+      // Sabbath service is active on Saturday from 08:00 AM (480 mins) to 18:30 PM (1110 mins)
+      const isSabbathServiceNow = (day === 6 && timeInMinutes >= 480 && timeInMinutes <= 1110);
+
+      if (isSabbathServiceNow) {
+        if (containerEl) {
+          containerEl.className = "flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-[11px] text-rose-800 dark:text-rose-200 font-bold transition-all animate-pulse";
+        }
+        if (iconEl) {
+          iconEl.setAttribute('data-lucide', 'radio');
+          iconEl.className = "w-3.5 h-3.5 flex-shrink-0 text-rose-600";
+        }
+        countdownEl.innerHTML = `<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>🔴 SABBATH WORSHIP SERVICE IN SESSION — ICT BOOTH ACTIVE</span>`;
+        return;
+      }
+
+      // If outside service hours, reset container styling to amber countdown
+      if (containerEl && !containerEl.classList.contains('bg-amber-50')) {
+        containerEl.className = "flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-[11px] text-amber-800 dark:text-amber-300 font-semibold transition-all";
+        if (iconEl) {
+          iconEl.setAttribute('data-lucide', 'clock');
+          iconEl.className = "w-3.5 h-3.5 flex-shrink-0 text-amber-600 animate-pulse";
+        }
+      }
+
+      // Target next Saturday 08:00 AM
+      const target = new Date(now);
+      let daysUntilSabbath = (6 - day + 7) % 7;
+      target.setDate(now.getDate() + daysUntilSabbath);
+      target.setHours(8, 0, 0, 0);
+
+      // If today is Saturday and 8:00 AM has already passed (after 18:30), target next Saturday
+      if (now >= target) {
+        target.setDate(target.getDate() + 7);
+      }
+
+      const totalSec = Math.max(0, Math.floor((target - now) / 1000));
       const days = Math.floor(totalSec / (3600 * 24));
       const hours = Math.floor((totalSec % (3600 * 24)) / 3600);
       const mins = Math.floor((totalSec % 3600) / 60);
+      const secs = Math.floor(totalSec % 60);
 
-      countdownEl.innerText = `${days}d ${hours}h ${mins}m to Sabbath 08:00 AM`;
+      countdownEl.innerText = `${days}d ${hours}h ${mins}m ${secs}s to Sabbath 08:00 AM`;
     };
 
     updateTimer();
-    setInterval(updateTimer, 60000);
+    setInterval(updateTimer, 1000);
   },
 
   renderMonthSelector() {
@@ -669,10 +737,39 @@ const App = {
       select.value = "";
     }
 
+    this.checkAssignConflicts();
     document.getElementById('assign-modal').classList.remove('hidden');
   },
 
+  checkAssignConflicts() {
+    const alertBox = document.getElementById('assign-conflict-alert');
+    if (!alertBox) return;
+
+    const roleId = document.getElementById('assign-role-id').value;
+    const memberId = document.getElementById('assign-member-select').value;
+
+    if (!memberId) {
+      alertBox.classList.add('hidden');
+      alertBox.innerHTML = '';
+      return;
+    }
+
+    const conflicts = RotaEngine.getMemberAssignmentConflicts(this.selectedDate, roleId, memberId);
+    if (conflicts.length > 0) {
+      alertBox.innerHTML = conflicts.map(c => `<div>${c}</div>`).join('');
+      alertBox.classList.remove('hidden');
+    } else {
+      alertBox.classList.add('hidden');
+      alertBox.innerHTML = '';
+    }
+  },
+
   closeAssignModal() {
+    const alertBox = document.getElementById('assign-conflict-alert');
+    if (alertBox) {
+      alertBox.classList.add('hidden');
+      alertBox.innerHTML = '';
+    }
     document.getElementById('assign-modal').classList.add('hidden');
   },
 
@@ -689,10 +786,17 @@ const App = {
 
     const rota = db.rotas.find(r => r.date === this.selectedDate);
     if (rota) {
+      StorageService.snapshotForUndo();
+      const roleObj = db.settings.roles.find(r => r.id === roleId);
+      const memberObj = db.members.find(m => m.id === memberId);
+      const roleName = roleObj ? roleObj.name : roleId;
+      const memberName = memberObj ? memberObj.name : 'Unassigned';
+
       rota.assignments = rota.assignments || {};
       rota.assignments[roleId] = memberId || null;
       rota.lastUpdated = new Date().toISOString();
       await StorageService.saveAll();
+      StorageService.logAudit('Assignment Change', `${roleName} assigned to ${memberName} (${this.selectedDate})`);
       this.closeAssignModal();
       this.renderAll();
       App.showToast("Duty assignment updated!");
@@ -731,9 +835,13 @@ const App = {
     const theme = document.getElementById('rota-theme-display').value.trim();
     const notes = document.getElementById('rota-notes-display').value.trim();
 
+    StorageService.snapshotForUndo();
     rota.theme = theme;
     rota.dutyLeadNotes = notes;
     await StorageService.saveAll();
+    StorageService.logAudit('Update Notes', `Updated theme/notes for ${this.selectedDate}`);
+    this.updateUndoButton();
+    this.renderAuditLog();
     App.showToast("Sabbath details saved.");
   },
 
@@ -749,6 +857,245 @@ const App = {
       toast.style.transition = 'opacity 0.3s';
       setTimeout(() => toast.remove(), 300);
     }, 2500);
+  },
+
+  // ─── Feature 10: Skill Gap Alerts ─────────────────────────────
+  renderSkillGapAlerts() {
+    const container = document.getElementById('skill-gap-alerts');
+    if (!container) return;
+
+    const db = StorageService.getData();
+    if (!db || !db.rotas || !db.members) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    const upcomingRotas = db.rotas.filter(r => r.date >= todayStr).slice(0, 4);
+    const criticalRoleIds = ['audio', 'switcher', 'camera', 'online'];
+    const activeMembers = db.members.filter(m => m.status === 'Active');
+
+    const gapWarnings = [];
+
+    upcomingRotas.forEach(rota => {
+      criticalRoleIds.forEach(roleId => {
+        const assignedMemberId = rota.assignments ? rota.assignments[roleId] : null;
+        if (!assignedMemberId) {
+          // Check if any qualified member is available
+          const qualifiedAvailable = activeMembers.filter(m => {
+            const hasSkill = m.skills && m.skills.includes(roleId);
+            const isAvailable = !m.unavailableDates || !m.unavailableDates.includes(rota.date);
+            return hasSkill && isAvailable;
+          });
+
+          const roleObj = db.settings.roles.find(r => r.id === roleId);
+          const roleName = roleObj ? roleObj.name : roleId;
+          const formattedDate = RotaEngine.formatReadableDate(rota.date);
+
+          if (qualifiedAvailable.length === 0) {
+            gapWarnings.push({
+              level: 'critical',
+              date: rota.date,
+              msg: `🚨 <strong>No qualified & available personnel</strong> for <strong>${roleName}</strong> on ${formattedDate}!`
+            });
+          } else {
+            gapWarnings.push({
+              level: 'warning',
+              date: rota.date,
+              msg: `⚠️ <strong>${roleName}</strong> is unassigned on ${formattedDate} (${qualifiedAvailable.length} qualified member${qualifiedAvailable.length > 1 ? 's' : ''} available)`
+            });
+          }
+        }
+      });
+    });
+
+    if (gapWarnings.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    // Render alerts
+    container.innerHTML = gapWarnings.slice(0, 3).map(w => `
+      <div class="p-2.5 sm:p-3 rounded-xl text-xs flex items-center justify-between gap-2 shadow-xs ${
+        w.level === 'critical'
+          ? 'bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-900/60 text-rose-800 dark:text-rose-200'
+          : 'bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-900/60 text-amber-800 dark:text-amber-200'
+      }">
+        <div class="flex items-center gap-2">
+          <i data-lucide="${w.level === 'critical' ? 'alert-triangle' : 'info'}" class="w-4 h-4 flex-shrink-0 ${w.level === 'critical' ? 'text-rose-600' : 'text-amber-600'}"></i>
+          <span>${w.msg}</span>
+        </div>
+        <button onclick="App.jumpToBoothView('${w.date}')" class="px-2 py-1 rounded text-[10px] font-bold underline hover:opacity-80 flex-shrink-0">
+          Assign Now →
+        </button>
+      </div>
+    `).join('');
+
+    if (window.lucide) lucide.createIcons();
+  },
+
+  // ─── Feature 9: Duty Load Dashboard ───────────────────────────
+  toggleDutyLoadChart() {
+    const body = document.getElementById('duty-load-body');
+    const chevron = document.getElementById('duty-load-chevron');
+    if (!body) return;
+    const isHidden = body.classList.contains('hidden');
+    if (isHidden) {
+      body.classList.remove('hidden');
+      if (chevron) chevron.classList.add('rotate-180');
+      this.renderDutyLoadChart();
+    } else {
+      body.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+  },
+
+  renderDutyLoadChart() {
+    const container = document.getElementById('duty-load-chart');
+    if (!container) return;
+
+    const db = StorageService.getData();
+    if (!db || !db.members) return;
+
+    const members = db.members.filter(m => m.status === 'Active');
+    const dutyCounts = {};
+    members.forEach(m => { dutyCounts[m.id] = 0; });
+
+    (db.rotas || []).forEach(rota => {
+      Object.values(rota.assignments || {}).forEach(memberId => {
+        if (memberId && dutyCounts[memberId] !== undefined) {
+          dutyCounts[memberId]++;
+        }
+      });
+    });
+
+    // Sort by duties descending
+    const sortedMembers = [...members].sort((a, b) => (dutyCounts[b.id] || 0) - (dutyCounts[a.id] || 0));
+    const maxDuty = Math.max(1, ...Object.values(dutyCounts));
+
+    container.innerHTML = sortedMembers.map(m => {
+      const count = dutyCounts[m.id] || 0;
+      const pct = Math.min(100, Math.round((count / maxDuty) * 100));
+
+      let barColor = 'bg-emerald-500';
+      let tagColor = 'text-emerald-700 dark:text-emerald-300';
+      if (count >= 6) {
+        barColor = 'bg-rose-500';
+        tagColor = 'text-rose-700 dark:text-rose-300 font-bold';
+      } else if (count >= 3) {
+        barColor = 'bg-amber-500';
+        tagColor = 'text-amber-700 dark:text-amber-300';
+      }
+
+      return `
+        <div class="flex items-center gap-2 text-xs py-0.5">
+          <div class="w-32 sm:w-44 truncate font-medium text-slate-800 dark:text-slate-200" title="${m.name}">
+            ${m.name}
+          </div>
+          <div class="flex-1 bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+            <div class="${barColor} h-3 rounded-full transition-all duration-300" style="width: ${Math.max(4, pct)}%"></div>
+          </div>
+          <div class="w-16 text-right text-[11px] ${tagColor}">
+            ${count} ${count === 1 ? 'duty' : 'duties'}
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  // ─── Feature 12: Audit Log ────────────────────────────────────
+  toggleAuditLog() {
+    const body = document.getElementById('audit-log-body');
+    const chevron = document.getElementById('audit-log-chevron');
+    if (!body) return;
+    const isHidden = body.classList.contains('hidden');
+    if (isHidden) {
+      body.classList.remove('hidden');
+      if (chevron) chevron.classList.add('rotate-180');
+      this.renderAuditLog();
+    } else {
+      body.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+  },
+
+  renderAuditLog() {
+    const panel = document.getElementById('audit-log-panel');
+    const entriesContainer = document.getElementById('audit-log-entries');
+    if (!panel || !entriesContainer) return;
+
+    // Only visible in Admin mode
+    if (!AdminAuth.isAdmin) {
+      panel.classList.add('hidden');
+      return;
+    }
+    panel.classList.remove('hidden');
+
+    const logs = StorageService.getAuditLog();
+    if (logs.length === 0) {
+      entriesContainer.innerHTML = `<p class="p-3 text-xs text-slate-400 text-center italic">No changes recorded in audit history yet.</p>`;
+      return;
+    }
+
+    entriesContainer.innerHTML = logs.map(item => {
+      const timeStr = new Date(item.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateStr = new Date(item.ts).toLocaleDateString([], { month: 'short', day: 'numeric' });
+      return `
+        <div class="p-2 sm:p-2.5 flex items-start justify-between gap-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-850">
+          <div>
+            <div class="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200 text-[11px]">
+              <span class="px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-mono text-[9px] uppercase">${item.action}</span>
+              <span>${item.details}</span>
+            </div>
+            <span class="text-[10px] text-slate-400">${dateStr} at ${timeStr}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+  },
+
+  clearAuditLog() {
+    if (!confirm('Clear recent audit log history?')) return;
+    StorageService.clearAuditLog();
+    this.renderAuditLog();
+    App.showToast("Audit log cleared.");
+  },
+
+  // ─── Feature 13: Undo Last Change ─────────────────────────────
+  updateUndoButton() {
+    const undoBtn = document.getElementById('undo-btn');
+    if (!undoBtn) return;
+    if (AdminAuth.isAdmin && StorageService.hasUndoSnapshot()) {
+      undoBtn.classList.remove('hidden');
+    } else {
+      undoBtn.classList.add('hidden');
+    }
+  },
+
+  async undoLastChange() {
+    if (!AdminAuth.isAdmin) {
+      AdminAuth.openLoginModal();
+      return;
+    }
+
+    if (!StorageService.hasUndoSnapshot()) {
+      App.showToast("No change to undo.");
+      return;
+    }
+
+    if (!confirm("Revert your last action and restore previous schedule state?")) {
+      return;
+    }
+
+    const success = await StorageService.undoLastChange();
+    if (success) {
+      this.renderAll();
+      App.showToast("Last change undone successfully! ↩️");
+    } else {
+      App.showToast("Failed to restore previous state.");
+    }
   }
 };
 

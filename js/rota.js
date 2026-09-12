@@ -59,6 +59,7 @@ const RotaEngine = {
 
   /**
    * Auto-assigns participants for a single Sabbath date using fair-share workload distribution
+   * and prevents consecutive week burnout
    */
   autoAssignForDate(dateStr) {
     const db = StorageService.getData();
@@ -69,6 +70,12 @@ const RotaEngine = {
       alert('Please add active ICT team members first!');
       return null;
     }
+
+    // Identify who served on the previous Sabbath
+    const targetDate = new Date(dateStr);
+    const sortedRotas = [...(db.rotas || [])].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const prevRota = sortedRotas.filter(r => new Date(r.date) < targetDate).pop();
+    const servedLastWeek = new Set(prevRota ? Object.values(prevRota.assignments || {}).filter(Boolean) : []);
 
     const dutyHistory = {};
     members.forEach(m => { dutyHistory[m.id] = 0; });
@@ -84,6 +91,15 @@ const RotaEngine = {
     const assignedThisSabbath = new Set();
     const assignments = {};
 
+    // Helper score: lower score = prioritized higher
+    const getMemberScore = (mId) => {
+      let score = (dutyHistory[mId] || 0) * 10;
+      if (servedLastWeek.has(mId)) {
+        score += 25; // Heavily de-prioritize members who served the immediately preceding week
+      }
+      return score;
+    };
+
     roles.forEach(role => {
       const eligibleMembers = members.filter(m => {
         const hasSkill = m.skills && m.skills.includes(role.id);
@@ -93,7 +109,7 @@ const RotaEngine = {
       });
 
       if (eligibleMembers.length > 0) {
-        eligibleMembers.sort((a, b) => (dutyHistory[a.id] || 0) - (dutyHistory[b.id] || 0));
+        eligibleMembers.sort((a, b) => getMemberScore(a.id) - getMemberScore(b.id));
         const chosen = eligibleMembers[0];
         assignments[role.id] = chosen.id;
         assignedThisSabbath.add(chosen.id);
@@ -101,9 +117,10 @@ const RotaEngine = {
       } else {
         const fallback = members.filter(m => !assignedThisSabbath.has(m.id) && (!m.unavailableDates || !m.unavailableDates.includes(dateStr)));
         if (fallback.length > 0) {
-          fallback.sort((a, b) => (dutyHistory[a.id] || 0) - (dutyHistory[b.id] || 0));
+          fallback.sort((a, b) => getMemberScore(a.id) - getMemberScore(b.id));
           assignments[role.id] = fallback[0].id;
           assignedThisSabbath.add(fallback[0].id);
+          dutyHistory[fallback[0].id] = (dutyHistory[fallback[0].id] || 0) + 1;
         } else {
           assignments[role.id] = null;
         }
@@ -111,6 +128,47 @@ const RotaEngine = {
     });
 
     return assignments;
+  },
+
+  /**
+   * Helper to check conflicts for a proposed member assignment on a given Sabbath
+   */
+  getMemberAssignmentConflicts(dateStr, targetRoleId, memberId) {
+    if (!memberId) return [];
+    const db = StorageService.getData();
+    const member = db.members.find(m => m.id === memberId);
+    if (!member) return [];
+
+    const warnings = [];
+
+    // 1. Unavailability Check
+    if (member.unavailableDates && member.unavailableDates.includes(dateStr)) {
+      warnings.push(`⚠️ ${member.name} is marked as unavailable/traveling on ${dateStr}!`);
+    }
+
+    // 2. Double booking on the same day
+    const rota = (db.rotas || []).find(r => r.date === dateStr);
+    if (rota && rota.assignments) {
+      Object.entries(rota.assignments).forEach(([rId, assignedMId]) => {
+        if (assignedMId === memberId && rId !== targetRoleId) {
+          const roleObj = db.settings.roles.find(r => r.id === rId);
+          warnings.push(`⚠️ ${member.name} is already assigned to "${roleObj ? roleObj.name : rId}" on this date!`);
+        }
+      });
+    }
+
+    // 3. Consecutive weeks burnout check
+    const sortedRotas = [...(db.rotas || [])].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const targetIdx = sortedRotas.findIndex(r => r.date === dateStr);
+    if (targetIdx > 0) {
+      const prevRota = sortedRotas[targetIdx - 1];
+      const wasAssignedPrev = Object.values(prevRota.assignments || {}).includes(memberId);
+      if (wasAssignedPrev) {
+        warnings.push(`ℹ️ ${member.name} served on duty on the previous Sabbath (${prevRota.date}).`);
+      }
+    }
+
+    return warnings;
   },
 
   /**
