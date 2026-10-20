@@ -8,6 +8,7 @@ const App = {
   matrixMonthFilter: 'ALL',
   matrixSearchQuery: '',
   matrixDisplayMode: window.innerWidth < 768 ? 'cards' : 'table',
+  showArchived: false,
 
   async init() {
     AdminAuth.init();
@@ -15,8 +16,12 @@ const App = {
     
     const db = StorageService.getData();
     const today = new Date();
-    const upcomingSabbath = (db.rotas || []).find(r => new Date(r.date) >= new Date(today.setHours(0,0,0,0)));
-    this.selectedDate = upcomingSabbath ? upcomingSabbath.date : (db.rotas[0]?.date || '2026-09-05');
+    today.setHours(0, 0, 0, 0);
+
+    // Sort ascending to find the earliest current or upcoming Sabbath
+    const rotas = [...(db.rotas || [])].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const upcomingSabbath = rotas.find(r => new Date(r.date) >= today);
+    this.selectedDate = upcomingSabbath ? upcomingSabbath.date : (rotas[rotas.length - 1]?.date || '2026-09-05');
 
     this.bindEvents();
     this.startSabbathCountdown();
@@ -153,12 +158,24 @@ const App = {
     if (window.lucide) lucide.createIcons();
   },
 
+  toggleArchived() {
+    this.showArchived = !this.showArchived;
+    this.renderDynamicMonthPills();
+    this.renderMatrixTables();
+  },
+
   renderDynamicMonthPills() {
     const container = document.getElementById('matrix-month-pills-container');
     if (!container) return;
 
     const db = StorageService.getData();
     const rotas = db.rotas || [];
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const pastCount = rotas.filter(r => new Date(r.date) < today).length;
+    const activeCount = rotas.filter(r => new Date(r.date) >= today).length;
 
     const monthsSet = new Set();
     rotas.forEach(r => {
@@ -169,9 +186,9 @@ const App = {
 
     let html = `
       <button onclick="App.filterMatrixMonth('ALL')" class="px-2.5 py-1 rounded-lg text-xs font-bold ${
-        this.matrixMonthFilter === 'ALL' ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
+        this.matrixMonthFilter === 'ALL' && !this.showArchived ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
       } transition whitespace-nowrap">
-        All (${rotas.length})
+        Upcoming (${activeCount})
       </button>
     `;
 
@@ -180,22 +197,34 @@ const App = {
       const d = new Date(parseInt(y), parseInt(m) - 1, 1);
       const label = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
       const count = rotas.filter(r => r.date.startsWith(mStr)).length;
-      const isSelected = this.matrixMonthFilter === mStr;
+      const isSelected = this.matrixMonthFilter === mStr && !this.showArchived;
 
       html += `
         <button onclick="App.filterMatrixMonth('${mStr}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${
-          isSelected ? 'bg-blue-600 text-white font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
+          isSelected ? 'bg-blue-600 text-white font-bold shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
         } transition whitespace-nowrap">
           ${label} (${count})
         </button>
       `;
     });
 
+    if (pastCount > 0) {
+      html += `
+        <button onclick="App.toggleArchived()" class="px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 ${
+          this.showArchived ? 'bg-amber-600 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
+        } transition whitespace-nowrap" title="Toggle past completed Sabbaths">
+          <i data-lucide="archive" class="w-3 h-3"></i>
+          Archived (${pastCount})
+        </button>
+      `;
+    }
+
     container.innerHTML = html;
   },
 
   filterMatrixMonth(filter) {
     this.matrixMonthFilter = filter;
+    this.showArchived = false;
     this.renderDynamicMonthPills();
     this.renderMatrixTables();
   },
@@ -213,8 +242,27 @@ const App = {
     const rotas = db.rotas || [];
     const isAdmin = AdminAuth.isAdmin;
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Split rotas into active (today & upcoming) and past (archived)
+    const activeRotas = rotas.filter(r => new Date(r.date) >= today);
+    const pastRotas = rotas.filter(r => new Date(r.date) < today);
+
+    // Identify the immediate next/current Sabbath among upcoming rotas
+    const sortedUpcoming = [...activeRotas].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const currentSabbath = sortedUpcoming.length > 0 ? sortedUpcoming[0] : null;
+
+    // Filter by mode: if user clicked "Archived", show past rotas; otherwise active upcoming rotas
+    let displayRotas = this.showArchived ? pastRotas : (activeRotas.length > 0 ? activeRotas : rotas);
+
+    // If a month pill is selected (and not ALL), filter by month
+    if (this.matrixMonthFilter !== 'ALL' && !this.showArchived) {
+      displayRotas = displayRotas.filter(r => r.date.startsWith(this.matrixMonthFilter));
+    }
+
     const monthsGrouped = {};
-    rotas.forEach(r => {
+    displayRotas.forEach(r => {
       const mKey = r.date.substring(0, 7);
       if (!monthsGrouped[mKey]) {
         const [y, m] = mKey.split('-');
@@ -228,10 +276,16 @@ const App = {
       monthsGrouped[mKey].rotas.push(r);
     });
 
-    let monthsList = Object.values(monthsGrouped).sort((a, b) => a.key.localeCompare(b.key));
-    if (this.matrixMonthFilter !== 'ALL') {
-      monthsList = monthsList.filter(m => m.key === this.matrixMonthFilter);
-    }
+    // In active view sort chronologically ascending; in archived view sort descending (most recent past first)
+    let monthsList = Object.values(monthsGrouped).sort((a, b) => {
+      return this.showArchived ? b.key.localeCompare(a.key) : a.key.localeCompare(b.key);
+    });
+
+    monthsList.forEach(m => {
+      m.rotas.sort((a, b) => {
+        return this.showArchived ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date);
+      });
+    });
 
     const roleDefinitions = [
       { key: 'audio', label: 'Audio Console', icon: 'volume-2', color: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' },
@@ -244,25 +298,48 @@ const App = {
       { key: 'overflow', label: 'Overflow AV', icon: 'radio', color: 'text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30' }
     ];
 
-    if (monthsList.length === 0) {
+    if (displayRotas.length === 0) {
       container.innerHTML = `
         <div class="py-12 text-center text-slate-400">
-          <i data-lucide="calendar-x" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-          <p class="font-bold">No Sabbaths scheduled.</p>
-          <button onclick="App.openAddSabbathModal()" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold">
-            + Add Sabbath Week
-          </button>
+          <i data-lucide="${this.showArchived ? 'archive' : 'calendar-x'}" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+          <p class="font-bold">${this.showArchived ? 'No archived past Sabbaths.' : 'No upcoming Sabbaths scheduled.'}</p>
+          ${!this.showArchived ? `
+            <button onclick="App.openAddSabbathModal()" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm">
+              + Add Sabbath Week
+            </button>
+          ` : `
+            <button onclick="App.filterMatrixMonth('ALL')" class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm">
+              Back to Upcoming Sabbaths
+            </button>
+          `}
         </div>
       `;
       if (window.lucide) lucide.createIcons();
       return;
     }
 
+    // Archive notice banner when viewing archive
+    let bannerHtml = '';
+    if (this.showArchived) {
+      bannerHtml = `
+        <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <i data-lucide="archive" class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0"></i>
+            <span><strong>Archived Past Sabbaths</strong> (${pastRotas.length}) — Viewing past completed duty records.</span>
+          </div>
+          <button onclick="App.filterMatrixMonth('ALL')" class="px-2.5 py-1 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700">
+            Show Upcoming
+          </button>
+        </div>
+      `;
+    }
+
     if (this.matrixDisplayMode === 'cards') {
-      container.innerHTML = monthsList.map(month => {
+      const monthsHtml = monthsList.map(month => {
         const cardsHtml = month.rotas.map(rota => {
           const dateObj = new Date(rota.date);
           const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          const isCurrent = currentSabbath && rota.date === currentSabbath.date;
           const isSelected = rota.date === this.selectedDate;
 
           const slotsHtml = roleDefinitions.map(rDef => {
@@ -285,11 +362,20 @@ const App = {
           }).join('');
 
           return `
-            <div class="glass-card rounded-xl p-3.5 border ${isSelected ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200 dark:border-slate-800'} space-y-3">
+            <div class="glass-card rounded-xl p-3.5 border ${
+              isCurrent 
+                ? 'border-blue-600 dark:border-blue-500 ring-2 ring-blue-500/30 bg-blue-50/30 dark:bg-blue-950/20 shadow-md' 
+                : (isSelected ? 'border-blue-400 ring-1 ring-blue-400/20' : 'border-slate-200 dark:border-slate-800')
+            } space-y-3">
               <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center space-x-2 truncate">
-                  <span class="w-2.5 h-2.5 rounded-full bg-blue-600 flex-shrink-0"></span>
+                  <span class="w-2.5 h-2.5 rounded-full ${isCurrent ? 'bg-emerald-500 animate-pulse' : 'bg-blue-600'} flex-shrink-0"></span>
                   <h4 class="font-extrabold text-sm text-slate-900 dark:text-white truncate font-heading">${formattedDate}</h4>
+                  ${isCurrent ? `
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-black uppercase tracking-wide border border-emerald-300 dark:border-emerald-800">
+                      ★ CURRENT / NEXT
+                    </span>
+                  ` : ''}
                 </div>
                 <div class="flex items-center space-x-1 flex-shrink-0">
                   <button onclick="ExportHub.copyWhatsAppRota('${rota.date}')" class="p-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 active:bg-emerald-100" title="Share WhatsApp">
@@ -326,10 +412,12 @@ const App = {
         `;
       }).join('');
 
+      container.innerHTML = bannerHtml + monthsHtml;
+
     } else {
       // Table Grid Mode
       const columns = [
-        { id: "date", name: "DATE", width: "w-28" },
+        { id: "date", name: "DATE", width: "w-32" },
         { id: "audio", name: "AUDIO", width: "w-36" },
         { id: "switcher", name: "SWITCHER", width: "w-36" },
         { id: "camera", name: "CAMERA", width: "w-36" },
@@ -341,17 +429,25 @@ const App = {
         ...(isAdmin ? [{ id: "actions", name: "ACTIONS", width: "w-16" }] : [])
       ];
 
-      container.innerHTML = monthsList.map(month => {
+      const tablesHtml = monthsList.map(month => {
         const rowsHtml = month.rotas.map((rota, idx) => {
           const dateObj = new Date(rota.date);
           const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+          const isCurrent = currentSabbath && rota.date === currentSabbath.date;
           const isSelected = rota.date === this.selectedDate;
 
           return `
-            <tr class="hover:bg-blue-50/60 dark:hover:bg-blue-950/30 transition border-b border-slate-200/80 dark:border-slate-800 ${isSelected ? 'bg-blue-50/80 dark:bg-blue-900/20' : (idx % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/40')}">
+            <tr class="hover:bg-blue-50/60 dark:hover:bg-blue-950/30 transition border-b border-slate-200/80 dark:border-slate-800 ${
+              isCurrent 
+                ? 'bg-blue-50/90 dark:bg-blue-950/40 ring-1 ring-blue-500/40 font-semibold' 
+                : (isSelected ? 'bg-blue-50/60 dark:bg-blue-900/20' : (idx % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/40'))
+            }">
               <td class="px-3 py-2.5 text-xs font-black text-blue-900 dark:text-blue-300 whitespace-nowrap">
-                <button onclick="App.jumpToBoothView('${rota.date}')" class="text-left hover:underline flex items-center gap-1" title="Click to view booth details">
+                <button onclick="App.jumpToBoothView('${rota.date}')" class="text-left hover:underline flex items-center gap-1.5" title="Click to view booth details">
                   <span>${formattedDate}</span>
+                  ${isCurrent ? `
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-emerald-500 text-white">LIVE</span>
+                  ` : ''}
                   <i data-lucide="chevron-right" class="w-3 h-3 opacity-60"></i>
                 </button>
               </td>
@@ -405,6 +501,8 @@ const App = {
           </div>
         `;
       }).join('');
+
+      container.innerHTML = bannerHtml + tablesHtml;
     }
 
     if (window.lucide) lucide.createIcons();
@@ -570,22 +668,33 @@ const App = {
 
     const db = StorageService.getData();
     const rotas = db.rotas || [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    selector.innerHTML = rotas.map(r => {
+    // Sort upcoming first (ascending), then past
+    const sortedRotas = [...rotas].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    selector.innerHTML = sortedRotas.map(r => {
       const isSelected = r.date === this.selectedDate;
+      const isPast = new Date(r.date) < today;
       const d = new Date(r.date);
       const dayName = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
       
       return `
-        <button onclick="App.selectSabbathDate('${r.date}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+        <button onclick="App.selectSabbathDate('${r.date}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center gap-1 ${
           isSelected 
             ? 'bg-blue-600 text-white shadow-md' 
-            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+            : (isPast 
+                ? 'bg-slate-100 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 border border-slate-200/50 dark:border-slate-800'
+                : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50')
         }">
+          ${isPast ? '<i data-lucide="history" class="w-2.5 h-2.5 opacity-60"></i>' : ''}
           ${dayName}
         </button>
       `;
     }).join('');
+
+    if (window.lucide) lucide.createIcons();
   },
 
   selectSabbathDate(dateStr) {
